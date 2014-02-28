@@ -1,3 +1,4 @@
+package FAiF;
 
 
 import java.awt.Color;
@@ -18,52 +19,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import HeroPackage.Hero_Ifreet;
+
 public class HeroManagmentPanel extends JPanel{
-	class LocationControl extends JPanel{
-		JLabel addLocationInfo=new JLabel();
-		JButton addLocation = new JButton();
-		public LocationControl() {
-			setPreferredSize(new Dimension(420, 40));
-			setLayout(new FlowLayout());
-			setBorder(BorderFactory.createLineBorder(Color.white));
-			setOpaque(false);
-			
-			addLocation.setText("Открыть портал");
-			add(addLocation);
-			
-			addLocation.addActionListener(new ActionListener(){
-		    	  public void actionPerformed(ActionEvent e) {
-						//LHoH.gameScreen.locationPanel.addLocation();
-						
-		    	  }
-		    	});
-			
-			int locNumber, locNumberMax;
-			
-			
 
-
-		
-			/*
-			String tmptext;
-			tmptext="<html> <p align=center><Font color=white>";
-			tmptext+="Открыто порталов: "+locNumber+" из "+locNumberMax;
-			tmptext+="<br>Стоимость открытия: "+LHoH.gameScreen.player.locationAddCostGold+" золота";
-			*/
-			//addLocationInfo.setText(tmptext);
-			add (addLocationInfo);
-		}
-		
-		void update (){
-
-
-		}
-	}
 	
 	
 Image bckground=null;
 JScrollPane scrollFrame;
-	LocationControl locationControl =new LocationControl();
+	BattleZoneHome battleZoneHome;
+	
 	public  HeroManagmentPanel() {
 		// TODO Auto-generated constructor stub
 	
@@ -73,9 +38,31 @@ JScrollPane scrollFrame;
 	//setPreferredSize(new Dimension(50, 104));
 	setLayout(new FlowLayout());
 	//setLayout(null);
-	//setBorder(BorderFactory.createLineBorder(Color.green));
+	setBorder(BorderFactory.createLineBorder(Color.green));
 
 	
+	battleZoneHome=new BattleZoneHome();
+	add(battleZoneHome);
+	
+	add(FAiF.gameScreen.locationScope);
+	Hero tmphero=new Hero_Ifreet();
+	tmphero.addHeroAbilities();
+	FAiF.gameScreen.heroStock.addHero(tmphero);
+	
+	
+	 tmphero=new Hero_Ifreet();
+	tmphero.addHeroAbilities();
+	FAiF.gameScreen.heroStock.addHero(tmphero);
+	/*
+	Hero tmphero1=new Hero_Ifreet();
+	tmphero1.setFlagIsThisEnemy(true);
+	FAiF.gameScreen.heroStock.addHero(tmphero1);
+	FAiF.gameScreen.heroStock.addHForce();
+	
+	Location tmploc=new Location();
+	tmploc.addEnemys(tmphero1.getId(), 0, 0);
+	add (tmploc);
+	*/
 /*
 	scrollFrame = new JScrollPane(LHoH.gameScreen.locationScope);
 	scrollFrame.setAutoscrolls(true);
@@ -112,7 +99,7 @@ removeAll();
 
 //add (LHoH.gameScreen.heroStockScroll);
 add (scrollFrame);
-add (locationControl);
+
 
 
 //add (LHoH.gameScreen.locationScope);
@@ -127,7 +114,7 @@ public void paintComponent(Graphics g) {
 }
 
 void update (){
-	locationControl.update();
+	//locationControl.update();
 }
 
 }

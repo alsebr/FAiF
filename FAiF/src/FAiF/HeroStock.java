@@ -1,3 +1,4 @@
+package FAiF;
 
 
 import java.awt.Color;
@@ -35,7 +36,7 @@ public class HeroStock extends JPanel {
 		heroZone = new BattleZone();
 		heroZone.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		add(heroZone);
-		heroZone.setZoneId(1);
+		//heroZone.setZoneId(1);
 		heroZone.setPreferredSize(new Dimension(250, 860));
 
 	}
@@ -72,6 +73,15 @@ public class HeroStock extends JPanel {
 	public Hero getHeroById(int id) {
 		for (Hero hero : allScope) {
 			if (hero.getId() == id)
+				return hero;
+		}
+
+		return null;
+	}
+	
+	public Hero getHeroByZoneId(int id) {
+		for (Hero hero : allScope) {
+			if (hero.getZone() == id)
 				return hero;
 		}
 
@@ -130,7 +140,15 @@ public class HeroStock extends JPanel {
 		}
 	}
 
-	void update() {
+	public void addHForce(){
+		for (Hero hero : allScopeTmp) {
+			allScope.add(hero);
+		}
+			
+			allScopeTmp.removeAll(allScopeTmp);
+	}
+	
+	public void updateElement() {
 		Hero tmphero = null;
 		for (Hero hero : allScope) {
 			if (hero.isRemoved()) {
@@ -145,7 +163,7 @@ public class HeroStock extends JPanel {
 
 		for (Hero hero : allScope) {
 			if (!hero.isRemoved())
-				hero.Update();
+				hero.updateElement();
 
 		}
 	

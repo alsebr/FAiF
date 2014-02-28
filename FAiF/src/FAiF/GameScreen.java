@@ -1,3 +1,4 @@
+package FAiF;
 
 
 import java.awt.Color;
@@ -20,11 +21,26 @@ import javax.swing.WindowConstants;
 
 
 public class GameScreen extends JFrame {
+public static final int  PROJECTILE_FIRST=1;
+public static final int  PROJECTILE_ALL=2;
+public static final int  CREATURE_FIGHT_ALIVE=1;
+public static final int  CREATURE_FIGHT_DEAD=2;
+public static final int  LOCATION_NOT_FIGHT=0;
+public static final int  LOCATION_PREFER_TO_FIGHT=1;
+public static final int  LOCATION_FIGHT_NOW=2;
+public static final int  LOCATION_AFTER_FIGHT=3;
+
+
 Mediator mediator=new Mediator();
-	
-	//TownPanel townPanel = new TownPanel();
+HeroManagmentPanel heroManagmentPanel;
+ScreenChoizer screenChoizer;
+LocationScope locationScope;
+
 	Timer timer = new Timer();
 	JPanel actionPart = new JPanel();
+	public HeroStock heroStock;
+	public HeroAbilityStock heroAbilityStock;
+	public ProjectileStock projectileStock;
 	//JButton optionsButton = new JButton();
 	//public HeroStock heroStock = new HeroStock();
 	//JScrollPane heroStockScroll;
@@ -45,20 +61,28 @@ Mediator mediator=new Mediator();
 	Taverna taverna;
 	HeroViewScreen heroViewScreen;
 */
-	HeroManagmentPanel heroManagmentPanel=new HeroManagmentPanel();
-	ScreenChoizer screenChoizer = new ScreenChoizer();
+
 	GameScreen() {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setSize(804, 600);
 		setLayout(null);
+		
 
 	}
 	
 	void initiate() {
 
 		//heroViewScreen=new HeroViewScreen();
-
+		heroAbilityStock=new HeroAbilityStock();
+		locationScope=new LocationScope();
+		projectileStock=new ProjectileStock();
 		
+		heroStock=new HeroStock();
+		heroManagmentPanel=new HeroManagmentPanel();
+		screenChoizer = new ScreenChoizer();
+		
+		
+		locationScope.initiate();
 		setResizable(false);
 		
 		
@@ -110,12 +134,17 @@ Mediator mediator=new Mediator();
 		}, 17, 17);
 
 		
-		add(new Group());
+		
 
 	}
 
 	void 	gameTick(){
 		
+		heroAbilityStock.updateElement();
+		projectileStock.updateElement();
+		locationScope.updateElement();
+		heroStock.updateElement();
+		repaint();
 	}
 	
 	

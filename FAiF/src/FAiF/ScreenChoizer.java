@@ -1,3 +1,4 @@
+package FAiF;
 
 
 import java.awt.Color;

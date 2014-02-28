@@ -1,3 +1,4 @@
+package FAiF;
 
 
 import java.awt.Color;
@@ -24,7 +25,7 @@ import javax.swing.JPanel;
 
 public class BattleZone extends JPanel implements DropTargetListener, BattleZoneInterface{
 	
-	private int zoneId;
+	protected int zoneId;
 	
 	BattleZone(){
 	setSize(85,110);
@@ -43,10 +44,6 @@ public class BattleZone extends JPanel implements DropTargetListener, BattleZone
 		return zoneId;
 	}
 
-	public void setZoneId(int zoneId) {
-		this.zoneId = zoneId;
-	}
-
 	void removeHeroFromZoneToHome(){
 		for (Hero hero : HeroStock.allScope) {
     		if ((hero.getZone()==zoneId))	{
@@ -57,7 +54,7 @@ public class BattleZone extends JPanel implements DropTargetListener, BattleZone
 	
 	public void paintComponent(Graphics g) {
 		
-		System.out.println("repaint BZ");
+		//System.out.println("repaint BZ");
 	 revalidate();
 
 		Graphics2D g2 = (Graphics2D) g;
@@ -104,13 +101,9 @@ public class BattleZone extends JPanel implements DropTargetListener, BattleZone
 	    	
 	    	
 	    	for (Hero hero : HeroStock.allScope) {
+	    		System.out.println(hero.getZone());
 	    		if (hero.getZone()==zoneId)	{
 	    			if (hero.status==1) add(hero);
-	    		}
-	    	}
-	    	for (Hero hero : HeroStock.allScope) {
-	    		if (hero.getZone()==zoneId)	{
-	    			if (hero.status!=1) add(hero);
 	    		}
 	    	}
 		
@@ -122,7 +115,7 @@ public class BattleZone extends JPanel implements DropTargetListener, BattleZone
 		
 		// Called when the user is dragging and enters this drop target
 		
-		System.out.println("Drop enter2222222222222222222222222");
+		
 		
 		    }
 		
@@ -169,7 +162,7 @@ public class BattleZone extends JPanel implements DropTargetListener, BattleZone
 		
 		  
 		  
-		  //System.out.println("Drop exit111111111111111111111111111111111111111");
+		
 
 		  if (zoneId!=1){
 			  for (Hero hero : HeroStock.allScope) {
@@ -181,7 +174,7 @@ public class BattleZone extends JPanel implements DropTargetListener, BattleZone
 		  }
 		  
 		  
-		  //LHoH.gameScreen.heroStock.getHeroById(heroId);
+		  
 		  
 		  
 		  for (Hero hero : HeroStock.allScope) {

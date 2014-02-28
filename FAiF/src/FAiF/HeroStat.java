@@ -1,3 +1,4 @@
+package FAiF;
 
 
 public class HeroStat {
