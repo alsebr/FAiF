@@ -22,9 +22,9 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-public class BattleZone extends JPanel implements DropTargetListener{
+public class BattleZone extends JPanel implements DropTargetListener, BattleZoneInterface{
 	
-	int zoneId;
+	private int zoneId;
 	
 	BattleZone(){
 	setSize(85,110);
@@ -39,39 +39,14 @@ public class BattleZone extends JPanel implements DropTargetListener{
 	new DropTarget(this, this);
 	}
 	
-	double getPower (){
-		for (Hero hero : HeroStock.allScope) {
-    		if (hero.getZone()==zoneId)	{
-    			return hero.getPower();
-    		}
-    	}
-		return 0;
+	public int getZoneId() {
+		return zoneId;
 	}
-	
-	void addExp(double inExp){
-		for (Hero hero : HeroStock.allScope) {
-    		if (hero.getZone()==zoneId)	{
-    			hero.addExp(inExp);
-    		}
-    	}
+
+	public void setZoneId(int zoneId) {
+		this.zoneId = zoneId;
 	}
-	
-	void setStatus (int  inStatus){
-		for (Hero hero : HeroStock.allScope) {
-    		if (hero.getZone()==zoneId)	{
-    			hero.setStatus(inStatus);;
-    		}
-    	}
-	}
-	
-	void removeHeroIfDead(){
-		for (Hero hero : HeroStock.allScope) {
-    		if ((hero.getZone()==zoneId)&&(hero.status==0 ))	{
-    			hero.setZone(1);
-    		}
-    	}
-	}
-	
+
 	void removeHeroFromZoneToHome(){
 		for (Hero hero : HeroStock.allScope) {
     		if ((hero.getZone()==zoneId))	{
@@ -84,8 +59,7 @@ public class BattleZone extends JPanel implements DropTargetListener{
 		
 		System.out.println("repaint BZ");
 	 revalidate();
-	//	pack();
-		//removeAll();
+
 		Graphics2D g2 = (Graphics2D) g;
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    reDrow(g2);
@@ -105,7 +79,10 @@ public class BattleZone extends JPanel implements DropTargetListener{
     	
 		return null;
 	}
-	
+	/*
+	 * Get hero from stoke
+	 * 
+	 */
 	public int getHeroId(){
 		
 		for (Hero hero : HeroStock.allScope) {

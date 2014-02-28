@@ -24,15 +24,14 @@ public class Group extends JPanel {
 
 
 
-	BattleZone[] heroZonesArray=new BattleZone[4];
+	BattleZone[] heroZonesArray=new BattleZone[3];
 	
 	
 	double power;
 	double winR;
 	int status; // 1- live 3 -end
 
-	double pLocation_current=0;
-	double pLocation_max=4;
+
 	
 	private String locationName;
 

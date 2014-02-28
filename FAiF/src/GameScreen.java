@@ -20,7 +20,7 @@ import javax.swing.WindowConstants;
 
 
 public class GameScreen extends JFrame {
-
+Mediator mediator=new Mediator();
 	
 	//TownPanel townPanel = new TownPanel();
 	Timer timer = new Timer();

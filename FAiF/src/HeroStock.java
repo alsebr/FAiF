@@ -35,7 +35,7 @@ public class HeroStock extends JPanel {
 		heroZone = new BattleZone();
 		heroZone.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		add(heroZone);
-		heroZone.zoneId = 1;
+		heroZone.setZoneId(1);
 		heroZone.setPreferredSize(new Dimension(250, 860));
 
 	}
