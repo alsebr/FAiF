@@ -95,7 +95,7 @@ public class Hero extends JPanel implements DragGestureListener,
 	double expNeedExp;
 	private HeroStat heroStat;
 	
-	private HeroStat heroStat_bonus= new HeroStat(0,0,0);
+	private HeroStat heroStat_bonus= new HeroStat(0,0,0,0,0);
 	String htmlTextHeroTip = "";
 	private double power;
 	private double power_bonus;
@@ -205,8 +205,8 @@ public class Hero extends JPanel implements DragGestureListener,
 	}
 
 	HeroStat getHeroStatPerLvlFinal() {
-		HeroStat tmpherostat = new HeroStat(0, 0, 0);
-
+		HeroStat tmpherostat = new HeroStat(0, 0, 0,0,0);
+/*
 		HeroStat playerModify = new HeroStat(0, 0, 0);
 
 		if (heroStatPlayerPref == 0) {
@@ -232,7 +232,7 @@ public class Hero extends JPanel implements DragGestureListener,
 		tmpherostat.intp = tmpherostat.intp / stabilze * statPointForLvl;
 		tmpherostat.vitp = tmpherostat.vitp / stabilze * statPointForLvl;
 		tmpherostat.strp = tmpherostat.strp / stabilze * statPointForLvl;
-
+*/
 		return tmpherostat;
 	}
 
