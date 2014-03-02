@@ -26,7 +26,7 @@ public class Hero_Ifreet extends Hero {
 		double costTear=0;
 		double deltaExp=18;
 		double strp=14;
-		double vitp=120;
+		double vitp=10;
 		double intp=31;
 		double agip=25;
 		double lckp=31;

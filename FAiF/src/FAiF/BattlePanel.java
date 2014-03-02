@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 
 import HeroPackage.Hero_Ifreet;
 
-public class HeroManagmentPanel extends JPanel{
+public class BattlePanel extends JPanel{
 
 	
 	
@@ -29,7 +29,7 @@ Image bckground=null;
 JScrollPane scrollFrame;
 	BattleZoneHome battleZoneHome;
 	
-	public  HeroManagmentPanel() {
+	public  BattlePanel() {
 		// TODO Auto-generated constructor stub
 	
 	
@@ -42,10 +42,8 @@ JScrollPane scrollFrame;
 
 	
 	battleZoneHome=new BattleZoneHome();
+	add(battleZoneHome);
 	
-	addComp();
-	
-	/*
 	add(FAiF.gameScreen.locationScope);
 	Hero tmphero=new Hero_Ifreet();
 	tmphero.addHeroAbilities();
@@ -55,7 +53,6 @@ JScrollPane scrollFrame;
 	 tmphero=new Hero_Ifreet();
 	tmphero.addHeroAbilities();
 	FAiF.gameScreen.heroStock.addHero(tmphero);
-	*/
 	/*
 	Hero tmphero1=new Hero_Ifreet();
 	tmphero1.setFlagIsThisEnemy(true);
@@ -66,16 +63,16 @@ JScrollPane scrollFrame;
 	tmploc.addEnemys(tmphero1.getId(), 0, 0);
 	add (tmploc);
 	*/
-/*
-	scrollFrame = new JScrollPane(LHoH.gameScreen.locationScope);
+
+	scrollFrame = new JScrollPane(FAiF.gameScreen.locationScope);
 	scrollFrame.setAutoscrolls(true);
-	scrollFrame.setPreferredSize(new Dimension( 425,390));
+	scrollFrame.setPreferredSize(new Dimension( 640,300));
 	scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	scrollFrame.setOpaque(false);
 	scrollFrame.setBorder(null);
-	//add (scrollFrame);
-	*/
+	add (scrollFrame);
+	
 	
 	
 	
@@ -101,10 +98,9 @@ void addComp(){
 removeAll();
 
 //add (LHoH.gameScreen.heroStockScroll);
-//add (scrollFrame);
-add(battleZoneHome);
-add(FAiF.gameScreen.itemStock);
-add(FAiF.gameScreen.heroInfo);
+add (scrollFrame);
+
+
 
 //add (LHoH.gameScreen.locationScope);
 

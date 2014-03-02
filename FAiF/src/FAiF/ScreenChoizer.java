@@ -74,7 +74,7 @@ public class ScreenChoizer extends JPanel{
 		
 		buttonHero.addActionListener(new ActionListener(){
 	    	  public void actionPerformed(ActionEvent e) {
-					//LHoH.gameScreen.activateHeroPanel();
+					FAiF.gameScreen.activateHeroManagmentPanel();
 	    	  }
 	    	});
 		
@@ -84,7 +84,7 @@ public class ScreenChoizer extends JPanel{
 		
 		buttonLocation.addActionListener(new ActionListener(){
 	    	  public void actionPerformed(ActionEvent e) {
-					//LHoH.gameScreen.activateLocationPanel();
+					FAiF.gameScreen.activateBattlePanel();
 	    	  }
 	    	});
 		

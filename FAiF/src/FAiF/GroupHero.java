@@ -11,5 +11,16 @@ public class GroupHero extends Group{
 				add(heroZonesArray[i]);
 			}		
 		}
+
+	
+	public void addExp(double exp){
+		for (int i = 0; i < heroZonesArray.length; i++) {
+			Hero tmHero=FAiF.gameScreen.heroStock.getHeroByZoneId(heroZonesArray[i]
+					.getZoneId());
+			if ( tmHero!= null) {
+				tmHero.addExp(exp);
+			}
+		}
+	}
 	
 }

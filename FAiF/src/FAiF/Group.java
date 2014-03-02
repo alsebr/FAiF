@@ -42,6 +42,19 @@ public abstract class Group extends JPanel {
 
 	}
 
+	public boolean isHereAliveInFightHeroes(){
+		for (int i = 0; i < heroZonesArray.length; i++) {
+			Hero tmphero=FAiF.gameScreen.heroStock.getHeroByZoneId(heroZonesArray[i]
+					.getZoneId());
+			if (tmphero != null) {
+				if (tmphero.isAliveInFight())return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
 	public boolean isHereHeroes() {
 		for (int i = 0; i < heroZonesArray.length; i++) {
 			if (FAiF.gameScreen.heroStock.getHeroByZoneId(heroZonesArray[i]
@@ -68,24 +81,64 @@ public abstract class Group extends JPanel {
 		projectileScope.add(projectile);
 	}
 
+	public void startFightHeroesInGroup() {
+		for (int i = heroZonesArray.length - 1; i > -1; i--) {
+			if ((FAiF.gameScreen.heroStock
+					.getHeroByZoneId(heroZonesArray[i].zoneId) != null)) {
+				FAiF.gameScreen.heroStock.getHeroByZoneId(
+						heroZonesArray[i].zoneId).startFight();
+
+			}
+		}
+	}
+
+	public void stopFightHeroesInGroup() {
+		for (int i = heroZonesArray.length - 1; i > -1; i--) {
+			if ((FAiF.gameScreen.heroStock
+					.getHeroByZoneId(heroZonesArray[i].zoneId) != null)) {
+				FAiF.gameScreen.heroStock.getHeroByZoneId(
+						heroZonesArray[i].zoneId).stopFight();
+
+			}
+		}
+	}
+
+	public boolean checkIsHeroesChange() {
+		for (int i = heroZonesArray.length - 1; i > -1; i--) {
+			if ((FAiF.gameScreen.heroStock
+					.getHeroByZoneId(heroZonesArray[i].zoneId) != null)) {
+				if (FAiF.gameScreen.heroStock.getHeroByZoneId(
+						heroZonesArray[i].zoneId).isOutOfBattle())
+					return true;
+
+			}
+		}
+		return false;
+	}
+
+	public boolean isChanged() {
+		// TO-DO 123
+		return false;
+	}
+
 	public void updateElement() {
 		for (Projectile projectile : projectileScope) {
 			boolean tmpFlagNotUsed = true;
 			if (projectile.getProjectileType() == FAiF.gameScreen.PROJECTILE_FIRST) {
 				for (int i = heroZonesArray.length - 1; i > -1; i--) {
-					if ((tmpFlagNotUsed)
-							&& (FAiF.gameScreen.heroStock
-									.getHeroByZoneId(heroZonesArray[i].zoneId) != null)) {
-						FAiF.gameScreen.heroStock.getHeroByZoneId(
-								heroZonesArray[i].zoneId).addProjectile(
-								projectile);
-						tmpFlagNotUsed = false;
+					Hero tmphero=FAiF.gameScreen.heroStock.getHeroByZoneId(heroZonesArray[i].zoneId);
+					if ((tmpFlagNotUsed)&& ( tmphero!= null)) {
+						if (!tmphero.isDead()){
+							tmphero.addProjectile(projectile);
+							tmpFlagNotUsed = false;	
+						}
+						
 
 					}
 				}
 			} else {
 
-				if (projectile.getProjectileType() == FAiF.gameScreen.PROJECTILE_FIRST) {
+				if (projectile.getProjectileType() == FAiF.gameScreen.PROJECTILE_ALL) {
 					for (int i = heroZonesArray.length - 1; i > -1; i--) {
 						if ((FAiF.gameScreen.heroStock
 								.getHeroByZoneId(heroZonesArray[i].zoneId) != null)) {
@@ -100,5 +153,4 @@ public abstract class Group extends JPanel {
 		}
 		projectileScope.removeAll(projectileScope);
 	}
-
 }

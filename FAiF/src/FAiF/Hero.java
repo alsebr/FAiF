@@ -41,22 +41,33 @@ import javax.swing.JPanel;
 import javax.swing.Spring;
 import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
+import static FAiF.Constant.*;
+
 public class Hero extends JPanel implements DragGestureListener,
 		DragSourceListener, MouseListener {
 	DragSource dragSource;
 
 	List<Projectile> projectileScope = new ArrayList<Projectile>();
 	List<HeroEffect> heroEffects = new ArrayList<HeroEffect>();
+	
 	private boolean flagDieThisTick = false;
 	private boolean flagLvlUpThisTick = false;
 	private boolean flagIsSilenced = false;
 	private boolean flagIsThisEnemy = false;
+	
+	private boolean flagIsUsesAbility = false;
+	
+	public boolean isUsesAbilityNow(){
+		if(status==CREATURE_FIGHT_ALIVE) return true;
+		return false;
+	}
+	
 	double exp;
 	double hpMax = 250;
 	double hpCurrent = 250;
 	public String name;
 	protected Image image;
-	public int status; // 1 - live, 0 - dead, 2 - strage, 3-removed
+	public int status=CREATURE_OUT_OF_BATTLE; // 1 - live, 0 - dead, 2 - strage, 3-removed
 	int lvl;
 	private int zone;
 	private int idHero;
@@ -99,6 +110,11 @@ public class Hero extends JPanel implements DragGestureListener,
 		this.idHero = id;
 	}
 
+	public boolean isOutOfBattle(){
+		if (status==CREATURE_OUT_OF_BATTLE) return true;
+		return false;
+	}
+	
 	public Hero() {
 		setSize(80, 105);
 		setPreferredSize(new Dimension(80, 105));
@@ -113,7 +129,7 @@ public class Hero extends JPanel implements DragGestureListener,
 
 		this.addMouseListener(this);
 		zone = 1;
-		status = 1;
+		//status = 1;
 	}
 
 	public void addHeroAbilities() {
@@ -129,7 +145,7 @@ public class Hero extends JPanel implements DragGestureListener,
 
 		this.name = name;
 		this.exp = 1;
-		this.status = 1;
+		
 		this.lvl = 1;
 		this.zone = 1;
 		this.deltaExp = inDeltaExp;
@@ -142,8 +158,13 @@ public class Hero extends JPanel implements DragGestureListener,
 		this.hpCurrent=this.hpMax;
 	}
 
-	boolean isDead() {
-		if (status == 0)
+	public boolean isDead() {
+		if (status == CREATURE_FIGHT_DEAD)
+			return true;
+		return false;
+	}
+	public boolean isAliveInFight() {
+		if (status == CREATURE_FIGHT_ALIVE)
 			return true;
 		return false;
 	}
@@ -152,12 +173,26 @@ public class Hero extends JPanel implements DragGestureListener,
 		return name;
 	}
 
+	
+	void lvlUp() {
+		setFlagLvlUpThisTick(true);
+		lvl += 1;
+		expNeedExp = deltaExp * ((double) lvl + (double) lvl * lvl / 20);
+		heroStat.intp += getHeroStatPerLvlFinal().intp;
+		heroStat.strp += getHeroStatPerLvlFinal().strp;
+		heroStat.vitp += getHeroStatPerLvlFinal().vitp;
+
+
+	}
 	void addExp(double addExp) {
 		exp += addExp;
+		while (expNeedExp < exp) {
+			lvlUp();
+		}
 	}
 
 	HeroStat getHeroStatPerLvlFinal() {
-		HeroStat tmpherostat = new HeroStat(0, 0, 0, 0, 0);
+		HeroStat tmpherostat = new HeroStat(10, 10, 10, 10, 10);
 		/*
 		 * HeroStat playerModify = new HeroStat(0, 0, 0);
 		 * 
@@ -181,17 +216,7 @@ public class Hero extends JPanel implements DragGestureListener,
 		return tmpherostat;
 	}
 
-	void lvlUp() {
-		setFlagLvlUpThisTick(true);
-		lvl += 1;
 
-		heroStat.intp += getHeroStatPerLvlFinal().intp;
-		heroStat.strp += getHeroStatPerLvlFinal().strp;
-		heroStat.vitp += getHeroStatPerLvlFinal().vitp;
-
-		// LHoH.gameScreen.bottomInfo.chat.addTextChat(name + " достиг " + lvl +
-		// " уровня, его мощь теперь " + (int) power);
-	}
 
 	void resetTick() {
 		heroStat_bonus.strp = 0;
@@ -203,11 +228,26 @@ public class Hero extends JPanel implements DragGestureListener,
 	}
 
 	protected void updateElement() {
+		expNeedExp = deltaExp * ((double) lvl + (double) lvl * lvl / 20);
+		
+		
 		for (Projectile projectile : projectileScope) {
 			hpCurrent += projectile.getDmg();
 			heroEffects.add(new HeroEffect(projectile.getDmg()));
 		}
 		projectileScope.removeAll(projectileScope);
+		
+		if (hpCurrent<=0) status=CREATURE_FIGHT_DEAD;
+		
+		
+		
+		List<HeroEffect> tmpHeroEffects = new ArrayList<HeroEffect>();
+		  for (HeroEffect heroEffect : heroEffects) {
+			
+			heroEffect.updateElement();
+			if (heroEffect.isFlagSelfDestroy()) tmpHeroEffects.add(heroEffect);
+		}
+		  heroEffects.removeAll(tmpHeroEffects);
 		
 	}
 
@@ -218,6 +258,8 @@ public class Hero extends JPanel implements DragGestureListener,
 	public void mouseClicked(MouseEvent arg0) {
 
 	}
+	
+	
 
 	void reDrow(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -226,27 +268,33 @@ public class Hero extends JPanel implements DragGestureListener,
 		g2.setStroke(new BasicStroke(2));
 
 		g2.setFont(new Font("Arial", Font.BOLD, 16));
+		
+		  g2.drawString(Integer.toString((int) status), 15, 48);
+		
+		  g2.drawString(Integer.toString((int) lvl), 10, 15);
+		  
 		g2.setColor(new Color(210, 60, 60, 128));
 		
-		  g2.drawString(Integer.toString((int) hpCurrent), 15, 98);
+		  
 		g2.fillRect(0, (int) (105*(hpCurrent/hpMax)), 80,105-(int) (105*(hpCurrent/hpMax)));
 		 
 		List<HeroEffect> tmpHeroEffects = new ArrayList<HeroEffect>();
 		  for (HeroEffect heroEffect : heroEffects) {
 			heroEffect.reDrow(g);
-			heroEffect.updateElement();
-			if (heroEffect.isFlagSelfDestroy()) tmpHeroEffects.add(heroEffect);
+			//heroEffect.updateElement();
+			//if (heroEffect.isFlagSelfDestroy()) tmpHeroEffects.add(heroEffect);
 		}
-		  heroEffects.removeAll(tmpHeroEffects);
+		  //heroEffects.removeAll(tmpHeroEffects);
 		  
 		  
 		  
 		  //double expNeedExp = deltaExp * ((double) lvl + (double) lvl * lvl /
-		   
-		  //double expNeedExpPr = deltaExp ((double) (lvl - 1) + (double)
-		  //(lvl - 1) * (lvl - 1) / 20); g2.fillRect(3, 10, 3, (int) (90 * (exp -
-		  //expNeedExpPr) / (expNeedExp - expNeedExpPr)));
-		 
+		  g2.setColor(Color.red);
+		  double expNeedExp = deltaExp * ((double) lvl + (double) lvl * lvl / 20);
+			double expNeedExpPr = deltaExp
+					* ((double) (lvl - 1) + (double) (lvl - 1) * (lvl - 1) / 20);
+			g2.fillRect(3, 10, 3,
+					(int) (90 * (exp - expNeedExpPr) / (expNeedExp - expNeedExpPr)));		 
 	}
 
 	public void paintComponent(Graphics g) {
@@ -258,15 +306,29 @@ public class Hero extends JPanel implements DragGestureListener,
 
 		if (!flagIsThisEnemy) {
 
-			if (status == 1) {
+			status=CREATURE_OUT_OF_BATTLE;
 				Transferable transferable = new StringSelection(
 						Integer.toString(idHero));// !!!!!
 				dragSource.startDrag(evt, DragSource.DefaultCopyDrop,
 						transferable, this);
-			}
+			
 		}
 	}
 
+	void startFight(){
+		hpCurrent=hpMax;
+		projectileScope.removeAll(projectileScope);
+		
+		status=CREATURE_FIGHT_ALIVE;
+	}
+	
+	void stopFight(){
+		hpCurrent=hpMax;
+		projectileScope.removeAll(projectileScope);
+		
+		status=CREATURE_OUT_OF_BATTLE;
+	}
+	
 	public void dragEnter(DragSourceDragEvent evt) {
 
 		// Called when the user is dragging this drag source and enters the drop

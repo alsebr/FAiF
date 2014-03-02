@@ -25,7 +25,11 @@ public class HeroAbilityStock {
 		
 
 			for (HeroAbility heroAbility : allScope) {
+				if (FAiF.gameScreen.heroStock.getHeroById(heroAbility.getHeroId()).isUsesAbilityNow()){
+					
+				
 				heroAbility.useAbility();
+				}
 			}
 			
 	/*	

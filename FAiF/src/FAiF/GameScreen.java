@@ -23,16 +23,13 @@ import javax.swing.WindowConstants;
 public class GameScreen extends JFrame {
 public static final int  PROJECTILE_FIRST=1;
 public static final int  PROJECTILE_ALL=2;
-public static final int  CREATURE_FIGHT_ALIVE=1;
-public static final int  CREATURE_FIGHT_DEAD=2;
-public static final int  LOCATION_NOT_FIGHT=0;
-public static final int  LOCATION_PREFER_TO_FIGHT=1;
-public static final int  LOCATION_FIGHT_NOW=2;
-public static final int  LOCATION_AFTER_FIGHT=3;
+
+
 
 
 Mediator mediator=new Mediator();
 HeroManagmentPanel heroManagmentPanel;
+BattlePanel battlePanel;
 ScreenChoizer screenChoizer;
 LocationScope locationScope;
 
@@ -41,6 +38,8 @@ LocationScope locationScope;
 	public HeroStock heroStock;
 	public HeroAbilityStock heroAbilityStock;
 	public ProjectileStock projectileStock;
+	public ItemStock itemStock;
+	public HeroInfo heroInfo;
 	//JButton optionsButton = new JButton();
 	//public HeroStock heroStock = new HeroStock();
 	//JScrollPane heroStockScroll;
@@ -48,7 +47,7 @@ LocationScope locationScope;
 	//public HeroAbilityStock heroAbilityStock=new HeroAbilityStock();
 /*
 	public LocationScope locationScope;
-	public ItemStock itemStock;
+	
 	
 	public BottomInfo bottomInfo = new BottomInfo();
 	LocationPanel locationPanel;
@@ -78,9 +77,12 @@ LocationScope locationScope;
 		projectileStock=new ProjectileStock();
 		
 		heroStock=new HeroStock();
-		heroManagmentPanel=new HeroManagmentPanel();
-		screenChoizer = new ScreenChoizer();
 		
+		battlePanel=new BattlePanel();
+		screenChoizer = new ScreenChoizer();
+		itemStock = new ItemStock();
+		heroInfo=new HeroInfo();
+		heroManagmentPanel=new HeroManagmentPanel();
 		
 		locationScope.initiate();
 		setResizable(false);
@@ -94,7 +96,7 @@ LocationScope locationScope;
 		actionPart.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 		actionPart.setLayout(null);
 		add(actionPart);
-		activateHeroManagmentPanel();
+		activateBattlePanel();
 		//locationScope = new LocationScope();
 
 		//itemStock = new ItemStock();
@@ -152,6 +154,12 @@ LocationScope locationScope;
 		actionPart.removeAll();
 		//locationPanel.addComp();
 		actionPart.add(heroManagmentPanel);
+	}
+	
+	void activateBattlePanel() {
+		actionPart.removeAll();
+		//locationPanel.addComp();
+		actionPart.add(battlePanel);
 	}
 	
 /*

@@ -75,9 +75,9 @@ public int getNumberAliveLocation(){
 
 public LocationScope() {
 
-	setPreferredSize(new Dimension(580, 280));
+	setPreferredSize(new Dimension(620, 1280));
 
-	setBorder(BorderFactory.createLineBorder(Color.black));
+	setBorder(BorderFactory.createLineBorder(Color.white));
 
 }
 
@@ -90,6 +90,17 @@ public void initiate(){
 	FAiF.gameScreen.heroStock.addHero(tmphero1);
 	FAiF.gameScreen.heroStock.addHForce();
 	tmploc.addEnemys(tmphero1.getId(), 0, 0);
+	tmploc.init();
+	tmphero1.addHeroAbilities();
+	
+	tmploc=new Location();
+	
+	allScope.add(tmploc);
+	 tmphero1=new Hero_Ifreet();
+	FAiF.gameScreen.heroStock.addHero(tmphero1);
+	FAiF.gameScreen.heroStock.addHForce();
+	tmploc.addEnemys(tmphero1.getId(), 0, 0);
+	tmploc.init();
 	tmphero1.addHeroAbilities();
 }
 
@@ -100,14 +111,7 @@ void reDrow (Graphics g){
 
 	}
 	
-	for (Location location : allScope) {
-		if (location.status==2) add(location);
 
-}
-	for (Location location : allScope) {
-		if (location.status==3) add(location);
-
-}
 }
 
 Location tmpLocationToAdd=null;

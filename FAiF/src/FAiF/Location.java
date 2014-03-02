@@ -14,19 +14,35 @@ import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import static FAiF.Constant.*;
 public class Location extends JPanel {
 
 	GroupHero groupHero;
 	GroupEnemy groupEnemy;
-	int status=FAiF.gameScreen.LOCATION_NOT_FIGHT;
-	double status_timer=0;
+	int status=LOCATION_NOT_FIGHT;
+	double status_timer=-1;
 	private String mLocationName;
 
+	double rewardXP;
+	static List<Reward> rewardScope = new ArrayList<Reward>();
+	
+	class Reward{
+		Item rewardItem;
+		double chance;
+		public Reward(Item rewardItem, double chance) {
+			this.rewardItem = rewardItem;
+			this.chance = chance;
+		}
+
+	}
+	
 	protected Location() {
 		groupHero = new GroupHero();
 		groupEnemy = new GroupEnemy();
@@ -40,22 +56,83 @@ public class Location extends JPanel {
 	}
 
 	protected void init() {
-
+		rewardXP=50;
 	}
 
 	void reDrow(Graphics g) {
 
 	}
 
+	void playerWin(){
+		for (Reward reward : rewardScope) {
+			if (frameworkFAiF.checkChance(reward.chance)){
+				//item add
+			}
+		}
+		
+		groupHero.addExp(rewardXP);
+		
+	}
+	
 	void updateElement() {
-		if (status==FAiF.gameScreen.LOCATION_FIGHT_NOW){
+		
+		switch (status) {
+		case LOCATION_NOT_FIGHT:
+			if (groupHero.isHereHeroes()){
+				status=LOCATION_PREFER_TO_FIGHT;
+			}
+			break;
+		case LOCATION_PREFER_TO_FIGHT:
+			if (status_timer<0)  status_timer=3;
+			status_timer-=(double)1/60;
+			if (status_timer<=0){
+				status_timer=-1;
+				status=LOCATION_FIGHT_NOW;
+				groupHero.startFightHeroesInGroup();
+				groupEnemy.startFightHeroesInGroup();
+			}
+			break;
+		case LOCATION_FIGHT_NOW:
 			groupEnemy.updateElement();
 			groupHero.updateElement();
-		}else{
+			if(groupHero.checkIsHeroesChange()) {
+				status=LOCATION_NOT_FIGHT;
+				groupHero.stopFightHeroesInGroup();
+				groupEnemy.stopFightHeroesInGroup();
+			}
 			
+			
+			if (!groupEnemy.isHereAliveInFightHeroes()&&groupHero.isHereAliveInFightHeroes()){
+				status=LOCATION_AFTER_FIGHT_WIN;
+				groupHero.stopFightHeroesInGroup();
+				groupEnemy.stopFightHeroesInGroup();
+				playerWin();
+			}
+			if (!groupHero.isHereAliveInFightHeroes()){
+				status=LOCATION_AFTER_FIGHT_DEFEAT;
+				groupHero.stopFightHeroesInGroup();
+				groupEnemy.stopFightHeroesInGroup();
+			}
+			
+			break;
+		case LOCATION_AFTER_FIGHT_WIN:
+		case LOCATION_AFTER_FIGHT_DEFEAT:
+			if (status_timer<0)  status_timer=3;
+			status_timer-=(double)1/60;
+			if (status_timer<=0){
+				status_timer=-1;
+				status=LOCATION_NOT_FIGHT;
+
+			}
+			break;
+		default:
+			break;
 		}
+		
 	}
 
+
+	
 	public void addEnemys(int heroId1,int heroId2,int heroId3){
 		groupEnemy.addEnemys(heroId1,heroId2,heroId3);
 	}
@@ -85,5 +162,7 @@ public class Location extends JPanel {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		reDrow(g);
 	}
+
+
 
 }

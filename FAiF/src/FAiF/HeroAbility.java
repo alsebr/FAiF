@@ -65,6 +65,14 @@ public class HeroAbility implements Comparable {
 		}
 	}
 	
+	public int getHeroId() {
+		return heroId;
+	}
+
+	public void setHeroId(int heroId) {
+		this.heroId = heroId;
+	}
+
 	public void useAbility() {
 		flagUseMaxChargeNow=false;
 		if (flagIsChargedAbility)chargeCheck();
