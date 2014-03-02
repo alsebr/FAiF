@@ -1,5 +1,7 @@
 package FAiF;
 
+import static FAiF.Constant.CREATURE_OUT_OF_BATTLE;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,6 +9,16 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
+import java.awt.dnd.DragSourceListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -19,15 +31,17 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-public class Item extends JPanel implements MouseListener{
-	int id;
+public class Item extends JPanel implements DragGestureListener,
+DragSourceListener, MouseListener{
+	DragSource dragSource;
+	int idItem;
 	protected Image image;
 	protected double charge_now=0;
 	protected double charge_max=0;
 	private String name="ERROR";
 	private double ttl=-1000;
-	private int ownerHeroId;
-	private int ownerHeroSlotNumber;
+	private int ownerHeroId=-1;
+	private int ownerHeroSlotNumber=-1;
 	private boolean flagRemoveThisTick=false;
 	private boolean flagItemWasActivated=false;
 	
@@ -47,8 +61,12 @@ public class Item extends JPanel implements MouseListener{
 		setPreferredSize(new Dimension(80,105));
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		Random randomGenerator = new Random();
-	    id=randomGenerator.nextInt(32000);
+	    idItem=randomGenerator.nextInt(32000);
 	    this.addMouseListener(this);
+	    
+	    dragSource = new DragSource();
+		dragSource.createDefaultDragGestureRecognizer(this,
+				DnDConstants.ACTION_COPY_OR_MOVE, this);
 	}
 	
 	public void activateItem (){
@@ -121,8 +139,8 @@ public class Item extends JPanel implements MouseListener{
 		
 	}
 	
-	protected int getId(){
-		return id;
+	protected int getIdItem(){
+		return idItem;
 	}
 	
 	protected void SelfDestroy (){
@@ -195,6 +213,85 @@ public class Item extends JPanel implements MouseListener{
 
 	public void setFlagItemWasActivated(boolean flagItemWasActivated) {
 		this.flagItemWasActivated = flagItemWasActivated;
+	}
+
+
+
+	@Override
+	public void dragDropEnd(DragSourceDropEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void dragEnter(DragSourceDragEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void dragExit(DragSourceEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void dragOver(DragSourceDragEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void dropActionChanged(DragSourceDragEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void dragGestureRecognized(DragGestureEvent arg0) {
+		
+
+	//	status=CREATURE_OUT_OF_BATTLE;
+			Transferable transferable = new StringSelection("100"+"	"+getIdItem());
+			dragSource.startDrag(arg0, DragSource.DefaultCopyDrop,
+					transferable, this);
+		
+	
+		
+	}
+
+
+
+	public int getOwnerHeroId() {
+		return ownerHeroId;
+	}
+
+
+
+	public void setOwnerHeroId(int ownerHeroId) {
+		this.ownerHeroId = ownerHeroId;
+	}
+
+
+
+	public int getOwnerHeroSlotNumber() {
+		return ownerHeroSlotNumber;
+	}
+
+
+
+	public void setOwnerHeroSlotNumber(int ownerHeroSlotNumber) {
+		this.ownerHeroSlotNumber = ownerHeroSlotNumber;
 	}
 
 }

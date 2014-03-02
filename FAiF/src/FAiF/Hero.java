@@ -256,7 +256,8 @@ public class Hero extends JPanel implements DragGestureListener,
 	}
 
 	public void mouseClicked(MouseEvent arg0) {
-
+		FAiF.gameScreen.heroInfo.setIdHeroToShow(idHero);
+		
 	}
 	
 	

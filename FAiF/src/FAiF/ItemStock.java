@@ -12,6 +12,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import ItemPackage.Item_Weapon1;
+
 
 
 public class ItemStock extends JPanel {
@@ -26,7 +28,7 @@ public class ItemStock extends JPanel {
 
 //allScope.add(new Item_BrokenClock(1));
 
-		//allScope.add(new Item_Weapon3(2));
+		allScope.add(new Item_Weapon1(1));
 
 		setOpaque(false);
 		
@@ -73,7 +75,9 @@ public class ItemStock extends JPanel {
 		revalidate();
 		removeAll();
 		for (Item item : allScope) {
-			add(item);
+			if (item.getOwnerHeroId()==-1){
+				add(item);
+			}
 
 		}
 
@@ -87,6 +91,16 @@ public class ItemStock extends JPanel {
 			}
 		}
 		return false;
+	}
+	
+	public Item getItemById(int id) {
+		for (Item item : allScope) {
+			if (item.getIdItem() == id) {
+				return item;
+				
+			}
+		}
+		return null;
 	}
 
 	public int checkItemCount(String nameItem) {
@@ -103,7 +117,7 @@ public class ItemStock extends JPanel {
 	public boolean checkItemWithId(int itemId) {
 		
 		for (Item item : allScope) {
-			if (item.getId() == itemId) {
+			if (item.getIdItem() == itemId) {
 				return true;
 
 			}

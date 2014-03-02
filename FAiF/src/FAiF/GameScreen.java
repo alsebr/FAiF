@@ -146,6 +146,7 @@ LocationScope locationScope;
 		projectileStock.updateElement();
 		locationScope.updateElement();
 		heroStock.updateElement();
+		heroInfo.updateElement();
 		repaint();
 	}
 	
