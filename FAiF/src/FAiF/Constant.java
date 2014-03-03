@@ -14,4 +14,6 @@ public class Constant {
 	public static final int  PROJECTILE_DAMAGE_TYPE_PHYSICAL=0;
 	public static final int  PROJECTILE_DAMAGE_TYPE_MAGIC=1;
 	public static final int  PROJECTILE_DAMAGE_TYPE_DARK=2;
+	public static final int  PROJECTILE_FIRST=1;
+	public static final int  PROJECTILE_ALL=2;
 }

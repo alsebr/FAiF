@@ -21,7 +21,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-
+import static FAiF.Constant.*;
 public abstract class Group extends JPanel {
 	BattleZone[] heroZonesArray = new BattleZone[3];
 	List<Projectile> projectileScope = new ArrayList<Projectile>();
@@ -124,7 +124,7 @@ public abstract class Group extends JPanel {
 	public void updateElement() {
 		for (Projectile projectile : projectileScope) {
 			boolean tmpFlagNotUsed = true;
-			if (projectile.getProjectileType() == FAiF.gameScreen.PROJECTILE_FIRST) {
+			if (projectile.getProjectileType() == PROJECTILE_FIRST) {
 				for (int i = heroZonesArray.length - 1; i > -1; i--) {
 					Hero tmphero=FAiF.gameScreen.heroStock.getHeroByZoneId(heroZonesArray[i].zoneId);
 					if ((tmpFlagNotUsed)&& ( tmphero!= null)) {
@@ -138,7 +138,7 @@ public abstract class Group extends JPanel {
 				}
 			} else {
 
-				if (projectile.getProjectileType() == FAiF.gameScreen.PROJECTILE_ALL) {
+				if (projectile.getProjectileType() == PROJECTILE_ALL) {
 					for (int i = heroZonesArray.length - 1; i > -1; i--) {
 						if ((FAiF.gameScreen.heroStock
 								.getHeroByZoneId(heroZonesArray[i].zoneId) != null)) {

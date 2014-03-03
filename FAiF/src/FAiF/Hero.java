@@ -146,6 +146,21 @@ public class Hero extends JPanel implements DragGestureListener,
 
 	}
 
+	
+	public double doPhysModifier(double damage){
+		double tmpd=damage;
+		
+		tmpd=(double)tmpd*((double)getHeroStat().strp/100+1);
+		return tmpd;
+	}
+	
+	public Projectile modifyAtackProjectile(Projectile projectile){
+		if (projectile.getDamageType()==PROJECTILE_DAMAGE_TYPE_PHYSICAL){
+			projectile.setDmg(doPhysModifier(projectile.getDmg()));
+		}
+		return projectile;
+	}
+	
 	public void init(String name, Image inImage, double inDeltaExp,
 			double statPointPerLvl, HeroStat heroStat, HeroStat heroStatRatio,
 			String htmlTextHeroTip) {
@@ -191,6 +206,8 @@ public class Hero extends JPanel implements DragGestureListener,
 		heroStat.intp += getHeroStatPerLvlFinal().intp;
 		heroStat.strp += getHeroStatPerLvlFinal().strp;
 		heroStat.vitp += getHeroStatPerLvlFinal().vitp;
+		heroStat.agip += getHeroStatPerLvlFinal().agip;
+		heroStat.lckp += getHeroStatPerLvlFinal().lckp;
 
 
 	}

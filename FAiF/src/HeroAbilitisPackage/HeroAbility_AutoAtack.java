@@ -1,12 +1,16 @@
 package HeroAbilitisPackage;
 
+import static FAiF.Constant.*;
+
 import java.util.Random;
 
 import FAiF.FAiF;
+import FAiF.Hero;
 import FAiF.HeroAbility;
 import FAiF.Projectile;
 import FAiF.ProjectileStock;
 import FAiF.HeroStock;
+
 
 public class HeroAbility_AutoAtack extends HeroAbility {
 
@@ -34,15 +38,20 @@ public class HeroAbility_AutoAtack extends HeroAbility {
 	
 	@Override
 	public void useAbilityCA(int heroId) {
-		setAbilityValue1(1/atackPerSecond);
+		Hero tmphero=FAiF.gameScreen.heroStock.getHeroById(heroId);
+		setAbilityValue1((double)1/(double)(atackPerSecond*(1+(double)tmphero.getHeroStat().agip/100)));
 		
 		Random randomGenerator = new Random();
-		int tmpdd = randomGenerator.nextInt((int)damageDelta)+1;
+		double tmpdd = (double)(randomGenerator.nextInt((int)damageDelta*100))/100+1;
 		
 		setAbilityValue2(-1*(damage+tmpdd));
 		chargeMax=getAbilityValue1();
 		if (flagUseMaxChargeNow){
-			FAiF.gameScreen.projectileStock.addProjectile(new Projectile(heroId,getAbilityValue2(),FAiF.gameScreen.PROJECTILE_FIRST));
+			Projectile tmpprojectile=new Projectile(heroId,getAbilityValue2(),PROJECTILE_FIRST,PROJECTILE_DAMAGE_TYPE_PHYSICAL);
+			
+			
+			tmpprojectile= tmphero.modifyAtackProjectile(tmpprojectile);
+					FAiF.gameScreen.projectileStock.addProjectile(tmpprojectile);
 
 		}
 	}

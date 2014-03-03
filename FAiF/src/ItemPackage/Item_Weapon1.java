@@ -45,7 +45,7 @@ setName("ѕылающий меч");
 
 
 HeroAbility tmpability;
-tmpability=new HeroAbility_AutoAtack(10, 5, 0.3);
+tmpability=new HeroAbility_AutoAtack(10, 5, 1);
 addAbilityToItem(tmpability);
 
 

@@ -22,8 +22,7 @@ import javax.swing.WindowConstants;
 
 
 public class GameScreen extends JFrame {
-public static final int  PROJECTILE_FIRST=1;
-public static final int  PROJECTILE_ALL=2;
+
 
 
 

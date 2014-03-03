@@ -5,10 +5,11 @@ private double dmg;
 private int fromId;
 private int projectileType;
 private int damageType;
-public Projectile(int fromId, double dmg, int projectileType) {
+public Projectile(int fromId, double dmg, int projectileType, int damageType) {
 	this.dmg=dmg;
 	this.fromId=fromId;
 	this.setProjectileType(projectileType);
+	this.setDamageType(damageType);
 }
 public double getDmg() {
 	return dmg;
@@ -27,5 +28,11 @@ public int getProjectileType() {
 }
 public void setProjectileType(int projectileType) {
 	this.projectileType = projectileType;
+}
+public int getDamageType() {
+	return damageType;
+}
+public void setDamageType(int damageType) {
+	this.damageType = damageType;
 }
 }
