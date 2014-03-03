@@ -6,6 +6,7 @@ import java.util.Random;
 public class HeroAbility implements Comparable {
 	private String name;
 	protected int heroId;
+	
 	private double abilityValue1;
 	private double abilityValue2;
 	private double abilityValue3;
@@ -17,6 +18,16 @@ public class HeroAbility implements Comparable {
 	protected boolean flagUseMaxChargeNow = false;
 	protected boolean flagIsChargedAbility=false;
 	
+	protected boolean flagIsActiveAbility=false;
+	
+	public boolean isFlagIsActiveAbility() {
+		return flagIsActiveAbility;
+	}
+
+	public void setFlagIsActiveAbility(boolean flagIsActiveAbility) {
+		this.flagIsActiveAbility = flagIsActiveAbility;
+	}
+
 	protected double chargeMax=0;
 	protected double chargeCurrent=0;
 
@@ -75,11 +86,11 @@ public class HeroAbility implements Comparable {
 
 	public void useAbility() {
 		flagUseMaxChargeNow=false;
-		if (flagIsChargedAbility)chargeCheck();
-		useAbilityCA();
+		if (flagIsActiveAbility)chargeCheck();
+		//useAbilityCA();
 	}
 
-	public void useAbilityCA(){
+	public void useAbilityCA(int heroId){
 		
 	}
 	public void useAbilityForHeroId(int id) {
@@ -183,5 +194,7 @@ public class HeroAbility implements Comparable {
 	public void setFlagThisIsTmpBossAbility(boolean flagThisIsTmpBossAbility) {
 		this.flagThisIsTmpBossAbility = flagThisIsTmpBossAbility;
 	}
+
+
 
 }

@@ -54,7 +54,7 @@ public class Hero_SmallShadow extends Hero {
 
 	
 	public void addHeroAbilities(){
-		FAiF.gameScreen.heroAbilityStock.addAbility(new HeroAbility_AutoAtack(getId()));
+	//	FAiF.gameScreen.heroAbilityStock.addAbility(new HeroAbility_AutoAtack(getId()));
 	}
 
 

@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
 
@@ -27,7 +28,7 @@ public static final int  PROJECTILE_ALL=2;
 
 
 
-Mediator mediator=new Mediator();
+
 HeroManagmentPanel heroManagmentPanel;
 BattlePanel battlePanel;
 ScreenChoizer screenChoizer;
@@ -71,6 +72,8 @@ LocationScope locationScope;
 	
 	void initiate() {
 
+		ToolTipManager.sharedInstance().setInitialDelay(0);
+		
 		//heroViewScreen=new HeroViewScreen();
 		heroAbilityStock=new HeroAbilityStock();
 		locationScope=new LocationScope();
@@ -80,8 +83,9 @@ LocationScope locationScope;
 		
 		battlePanel=new BattlePanel();
 		screenChoizer = new ScreenChoizer();
-		itemStock = new ItemStock();
+		
 		heroInfo=new HeroInfo();
+		itemStock = new ItemStock();
 		heroManagmentPanel=new HeroManagmentPanel();
 		
 		locationScope.initiate();
@@ -145,6 +149,7 @@ LocationScope locationScope;
 		heroAbilityStock.updateElement();
 		projectileStock.updateElement();
 		locationScope.updateElement();
+		itemStock.updateElement();
 		heroStock.updateElement();
 		heroInfo.updateElement();
 		repaint();

@@ -46,7 +46,7 @@ public class ItemStock extends JPanel {
 		reDrow(g);
 	}
 
-	void update() {
+	void updateElement() {
 
 		List<Item> tmpScope = new ArrayList<Item>();
 		
@@ -65,7 +65,7 @@ public class ItemStock extends JPanel {
 		
 		
 		for (Item item : allScope) {
-			item.update();
+			item.updateElement();
 
 		}
 
@@ -74,13 +74,19 @@ public class ItemStock extends JPanel {
 	void reDrow(Graphics g) {
 		revalidate();
 		removeAll();
-		for (Item item : allScope) {
-			if (item.getOwnerHeroId()==-1){
-				add(item);
+		List<Item> tmpScope = new ArrayList<Item>();
+		for (Hero hero : FAiF.gameScreen.heroStock.allScope) {
+			for (int i = 0; i < hero.itemArray.length; i++) {
+			tmpScope.add(getItemById(hero.itemArray[i]));	
 			}
-
 		}
+		List<Item> tmpScope2 = new ArrayList<Item>();
+		tmpScope2.addAll(allScope);
+		tmpScope2.removeAll(tmpScope);
 
+		for (Item item : tmpScope2) {
+			add(item);
+		}
 	}
 
 	boolean getItem(String nameItem) {

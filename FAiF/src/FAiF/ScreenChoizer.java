@@ -129,12 +129,8 @@ public class ScreenChoizer extends JPanel{
 		
 	}
 	public void paintComponent(Graphics g) {
-		//removeAll();	
-		//add (LHoH.gameScreen.heroStock);
-		//add (LHoH.gameScreen.locationScope);
 			g.drawImage(bckground, 0, 0, null);
-		//setBackground(Color.black);
-			
+		
 		}
 
 }

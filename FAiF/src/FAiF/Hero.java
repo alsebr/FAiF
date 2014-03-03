@@ -50,11 +50,13 @@ public class Hero extends JPanel implements DragGestureListener,
 	List<Projectile> projectileScope = new ArrayList<Projectile>();
 	List<HeroEffect> heroEffects = new ArrayList<HeroEffect>();
 	
+	int[] itemArray=new int[] {-1,-1,-1};
+	
 	private boolean flagDieThisTick = false;
 	private boolean flagLvlUpThisTick = false;
 	private boolean flagIsSilenced = false;
 	private boolean flagIsThisEnemy = false;
-	
+	private int grade;
 	private boolean flagIsUsesAbility = false;
 	
 	public boolean isUsesAbilityNow(){
@@ -71,6 +73,14 @@ public class Hero extends JPanel implements DragGestureListener,
 	int lvl;
 	private int zone;
 	private int idHero;
+	public int getIdHero() {
+		return idHero;
+	}
+
+	public void setIdHero(int idHero) {
+		this.idHero = idHero;
+	}
+
 	double expNeedExp;
 	private HeroStat heroStat;
 	private HeroStat heroStat_bonus = new HeroStat(0, 0, 0, 0, 0);
@@ -190,6 +200,14 @@ public class Hero extends JPanel implements DragGestureListener,
 			lvlUp();
 		}
 	}
+	
+ public 	void removeItemFromHero(int idItem){
+		for (int i = 0; i < itemArray.length; i++) {
+			if (itemArray[i]==idItem){
+				itemArray[i]=-1;
+			}
+		}
+	}
 
 	HeroStat getHeroStatPerLvlFinal() {
 		HeroStat tmpherostat = new HeroStat(10, 10, 10, 10, 10);
@@ -227,9 +245,21 @@ public class Hero extends JPanel implements DragGestureListener,
 		setFlagIsSilenced(false);
 	}
 
+	void useAbilitis(){
+	
+		//HeroAbility
+		if (isAliveInFight()){
+		
+			
+			
+		}
+	}
+	
 	protected void updateElement() {
 		expNeedExp = deltaExp * ((double) lvl + (double) lvl * lvl / 20);
 		
+		
+		useAbilitis();
 		
 		for (Projectile projectile : projectileScope) {
 			hpCurrent += projectile.getDmg();
@@ -483,4 +513,6 @@ public class Hero extends JPanel implements DragGestureListener,
 	public void addProjectile(Projectile projectile) {
 		projectileScope.add(projectile);
 	}
+
+
 }

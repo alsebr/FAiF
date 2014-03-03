@@ -82,15 +82,15 @@ public class ItemPlace extends JPanel implements DropTargetListener{
 	    
 	    	removeAll();
 	    	
-	    	
-	    	for (Item	 item : FAiF.gameScreen.itemStock.allScope) {
-	    		
-	    		if (item.getOwnerHeroId()==FAiF.gameScreen.heroInfo.getIdHeroToShow()){
-	    			if (item.getOwnerHeroSlotNumber()==itemPlaceSlotNumber){
-	    				add(item);
-	    			}
-	    		}
+	    	int tmpHeroId=FAiF.gameScreen.heroInfo.getIdHeroToShow();
+	    	Hero tmpHero=FAiF.gameScreen.heroStock.getHeroById(tmpHeroId);
+	    	if (tmpHero!=null){
+	    		Item tmpItem=FAiF.gameScreen.itemStock.getItemById(tmpHero.itemArray[itemPlaceSlotNumber]);
+	    	if (tmpItem!=null) add(tmpItem);
 	    	}
+	    	
+	    	
+	    	
 		
 	}
 
@@ -149,38 +149,20 @@ public class ItemPlace extends JPanel implements DropTargetListener{
 			  if (Integer.parseInt(tmpstr[0])==100){
 				  int idHeroShow=FAiF.gameScreen.heroInfo.getIdHeroToShow();
 				  if (idHeroShow!=-1){
+					 Hero tmpHero=FAiF.gameScreen.heroStock.getHeroById(idHeroShow);
 					 Item tmpitem=FAiF.gameScreen.itemStock.getItemById(Integer.parseInt(tmpstr[1]));
-					 tmpitem.setOwnerHeroId(FAiF.gameScreen.heroInfo.getIdHeroToShow());
-					 tmpitem.setOwnerHeroSlotNumber(itemPlaceSlotNumber);
+					 for (Hero hero : FAiF.gameScreen.heroStock.allScope) {
+							hero.removeItemFromHero(Integer.parseInt(tmpstr[1]));
+						}
+					 tmpHero.itemArray[itemPlaceSlotNumber]=Integer.parseInt(tmpstr[1]);
+					 
+					 
 				  }
 			  }
 		  }
 		  
-		  // We append the label text to the text area when dropped
-		
-		  
-		  
-		
-/*
-		  if (zoneId!=1){
-			  for (Hero hero : HeroStock.allScope) {
-					if (hero.getZone()==zoneId) {
-						hero.setZone(1);
-						
-					}
-				} 
-		  }
-	*/	  
-		  
-		  
-		  
-		  
-		  for (Hero hero : HeroStock.allScope) {
-			if (hero.getId()==Integer.parseInt(dragContents)) {
-			//	hero.setZone(zoneId);
-				
-			}
-		}
+		  	  
+
 		  
 		    } else {
 		

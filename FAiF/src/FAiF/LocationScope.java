@@ -21,151 +21,90 @@ import javax.swing.JScrollPane;
 import HeroPackage.Hero_Ifreet;
 import HeroPackage.Hero_SmallShadow;
 
-
-
-public class LocationScope extends JPanel{
-	
+public class LocationScope extends JPanel {
 	static List<Location> allScope = new ArrayList<Location>();
-	
-	
+	private Location tmpLocationToAdd = null;
 
-void addLocation (){
-	
-	String inName;
-	int inPower;
-	double inwinR;
-	Image inEnemy=null;;
-	double inbonus50Gold,inbonus50Soul,inbonus50Tear,inbonusALLexp;
-	//Location(String inName,int inPower, int inwinR, Image inEnemy,double inbonus50Gold,double inbonus50Soul, double inbonus50Tear, double inbonusALLexp){
-	
-	Random random = new Random();
-	
-	
-	inName="ERROR";
-	inPower=65;
-	inwinR=0.35;
-	try {
-		inEnemy = ImageIO.read(new File("data/image/loc/loc2.gif"));
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	public LocationScope() {
+		setPreferredSize(new Dimension(620, 1280));
+		setBorder(BorderFactory.createLineBorder(Color.white));
+
 	}
-	
 
-	
-	
+	void addLocation() {
+	}
 
-	
-	
-	//Location tmpL = new Location(inName,inPower,inwinR,inEnemy,inbonus50Gold,inbonus50Soul,inbonus50Tear,inbonusALLexp);
-	//allScope.add(tmpL);
-	//add(tmpL);
-	
-}
+	public void initiate() {
 
-public int getNumberAliveLocation(){
-	int count=0;
-	for (Location location : allScope) {
-		if (location.status==1) count++;
+		Location tmploc = new Location();
 
-}
-	return count;
-}
+		allScope.add(tmploc);
+		Hero tmphero1 = new Hero_SmallShadow();
+		FAiF.gameScreen.heroStock.addHero(tmphero1);
+		FAiF.gameScreen.heroStock.addHForce();
+		tmploc.addEnemys(tmphero1.getId(), 0, 0);
+		tmploc.init();
+		tmphero1.addHeroAbilities();
 
+		tmploc = new Location();
 
-public LocationScope() {
+		allScope.add(tmploc);
+		tmphero1 = new Hero_Ifreet();
+		FAiF.gameScreen.heroStock.addHero(tmphero1);
+		FAiF.gameScreen.heroStock.addHForce();
+		tmploc.addEnemys(tmphero1.getId(), 0, 0);
+		tmploc.init();
+		tmphero1.addHeroAbilities();
+	}
 
-	setPreferredSize(new Dimension(620, 1280));
-
-	setBorder(BorderFactory.createLineBorder(Color.white));
-
-}
-
-public void initiate(){
-	
-	Location tmploc=new Location();
-	
-	allScope.add(tmploc);
-	Hero tmphero1=new Hero_SmallShadow();
-	FAiF.gameScreen.heroStock.addHero(tmphero1);
-	FAiF.gameScreen.heroStock.addHForce();
-	tmploc.addEnemys(tmphero1.getId(), 0, 0);
-	tmploc.init();
-	tmphero1.addHeroAbilities();
-	
-	tmploc=new Location();
-	
-	allScope.add(tmploc);
-	 tmphero1=new Hero_Ifreet();
-	FAiF.gameScreen.heroStock.addHero(tmphero1);
-	FAiF.gameScreen.heroStock.addHForce();
-	tmploc.addEnemys(tmphero1.getId(), 0, 0);
-	tmploc.init();
-	tmphero1.addHeroAbilities();
-}
-
-void reDrow (Graphics g){
-	removeAll();
-	for (Location location : allScope) {
+	void reDrow(Graphics g) {
+		removeAll();
+		for (Location location : allScope) {
 			add(location);
-
-	}
-	
-
-}
-
-Location tmpLocationToAdd=null;
-
-void addLocationToScope(Location tmploc){
-	tmpLocationToAdd=tmploc;
-}
-
-void updateElement (){
-	for (Location location : allScope) {
-		location.updateElement();
-
-}
-	if (tmpLocationToAdd!=null){
-		allScope.add(tmpLocationToAdd);
-		tmpLocationToAdd=null;
-	}
-	
-}
-
-public boolean transportProjectileToGroup(Projectile projectile){
-	for (Location location : allScope) {
-		if(location.transportProjectileToGroup(projectile)){
-			return true;
 		}
-			
-		
 	}
-	return false;
-}
 
-public Location getLocationByHeroId(int id){
-	for (Location location: allScope) {
-		//if (location.hero1.getHeroId()==id) return location;
+	void addLocationToScope(Location tmploc) {
+		tmpLocationToAdd = tmploc;
 	}
-	
-	
-	return null;
-}
 
+	void updateElement() {
+		for (Location location : allScope) {
+			location.updateElement();
 
+		}
+		if (tmpLocationToAdd != null) {
+			allScope.add(tmpLocationToAdd);
+			tmpLocationToAdd = null;
+		}
 
+	}
 
+	public boolean transportProjectileToGroup(Projectile projectile) {
+		for (Location location : allScope) {
+			if (location.transportProjectileToGroup(projectile)) {
+				return true;
+			}
 
-public void paintComponent(Graphics g) {
-	
-	
- 
-	//removeAll();
-	Graphics2D g2 = (Graphics2D) g;
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    reDrow(g);
-}
+		}
+		return false;
+	}
 
+	public Location getLocationByHeroId(int id) {
+		for (Location location : allScope) {
+			// if (location.hero1.getHeroId()==id) return location;
+		}
 
+		return null;
+	}
+
+	public void paintComponent(Graphics g) {
+
+		// removeAll();
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		reDrow(g);
+	}
 
 }

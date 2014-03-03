@@ -25,6 +25,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -32,266 +35,196 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class Item extends JPanel implements DragGestureListener,
-DragSourceListener, MouseListener{
+		DragSourceListener, MouseListener {
 	DragSource dragSource;
 	int idItem;
 	protected Image image;
-	protected double charge_now=0;
-	protected double charge_max=0;
-	private String name="ERROR";
-	private double ttl=-1000;
-	private int ownerHeroId=-1;
-	private int ownerHeroSlotNumber=-1;
-	private boolean flagRemoveThisTick=false;
-	private boolean flagItemWasActivated=false;
+	private String name = "ERROR";
+private int itemType;
+	private boolean flagRemoveThisTick = false;
+	protected int grade = 0;
+	protected int sharpen = 0;
+	protected List<Integer> abilityScope = new ArrayList<Integer>();
+	String[] gradePrefix= new String[] {"Сломанный",
+			"Никчемный",
+			" ",
+			"Необычный",
+			"Мастерский",
+			"Великий",
+			"Уникальный",
+			"Эпичный",
+			"Легендарный",
+			"Божественный"};
+	String[] gradeColor= new String[] {"black",
+			"black",
+			"black",
+			"black",
+			"black",
+			"green",
+			"blue",
+			"magenta",
+			"orange",
+			"yellow"};
 	
-	public double getTtl() {
-		return ttl;
-	}
-
-	
-
-	public void setTtl(double ttl) {
-		this.ttl = ttl;
-	}
-
-	protected int grade=0;
 	public Item() {
-		setSize(80	,105);
-		setPreferredSize(new Dimension(80,105));
+		setSize(80, 105);
+		setPreferredSize(new Dimension(80, 105));
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		Random randomGenerator = new Random();
-	    idItem=randomGenerator.nextInt(32000);
-	    this.addMouseListener(this);
-	    
-	    dragSource = new DragSource();
+		idItem = randomGenerator.nextInt(32000);
+		this.addMouseListener(this);
+
+		dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(this,
 				DnDConstants.ACTION_COPY_OR_MOVE, this);
 	}
-	
-	public void activateItem (){
-		//ttl-=(double)1/60;
-	}
-	
-	void checkCharge (){
+
+	void init(){
 		
 	}
 	
-	void doActionBeforeTtlDead(){
-		
-	}
-	
-	void checkTTL(){
-		if (ttl>-1000){
-			ttl-=(double)1/60;
-			
-			if (ttl<=0){
-				doActionBeforeTtlDead();
-				setFlagRemoveThisTick(true);
-			}
-		}
-	}
-	
-	void update (){
-		checkCharge();
-		checkTTL();
-		checkTimerAction();
-		
-	}
-	
-	protected void checkTimerAction() {
-		// TODO Auto-generated method stub
-		
+	public void activateItem() {
+
 	}
 
-	public String getName(){
+
+
+
+
+	void updateElement() {
+		String htmlText="<html><p>";
+		htmlText+=getNameHtml()+"</p>";
+		
+		htmlText+=FAiF.gameScreen.heroAbilityStock.getAllTipHeroAbilityByItemId(idItem);
+		
+		setToolTipText(htmlText);
+	}
+
+	public String getName() {
 		return name;
 	}
 	
-	public void setName(String name){
-		this.name=name;
+	public String getNameHtml() {
+		String htmlText=gradePrefix[grade]+" "+name;
+		 htmlText="<font color="+gradeColor[grade]+">"+htmlText+"</font>";
+		return htmlText;
 	}
-	
-	
-	void reDrow (Graphics g){
-		Graphics2D g2 = (Graphics2D) g;
-		
-		
-		//g.setColor(new Color(255,255,255,128));
-		//g.fillRect(0, 0,80 ,105);
-		
-		g.drawImage(image, 0, 0, null);
-		
 
-		
-		if(grade>0){
-			Image pentagr=null;
-			try {
-				pentagr = ImageIO.read(new File("data/image/interface/pentagr.gif"));
-			} catch (IOException e) {
-			}
-			for (int i = 0; i < grade; i++) {
-				g.drawImage(pentagr, 3, 70-i*33, null);	
-			}
-			
-		}
-		
-		
+	public void setName(String name) {
+		this.name = name;
 	}
-	
-	protected int getIdItem(){
+
+	void reDrow(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		g.drawImage(image, 0, 0, null);
+		g2.drawString("I", 10, 15);
+	}
+
+	protected int getIdItem() {
 		return idItem;
 	}
-	
-	protected void SelfDestroy (){
+
+	protected void SelfDestroy() {
 		setFlagRemoveThisTick(true);
 	}
 
 	public void paintComponent(Graphics g) {
-		
-		
-	 
-		//removeAll();
-		//Graphics2D g2 = (Graphics2D) g;
-	    //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    reDrow(g);
+		reDrow(g);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		if (arg0.getClickCount()==2){
-			
-		
-		activateItem();
+		if (arg0.getClickCount() == 2) {
+			activateItem();
 		}
-		
 	}
-
-
 
 	public boolean isFlagRemoveThisTick() {
 		return flagRemoveThisTick;
 	}
 
-
-
 	public void setFlagRemoveThisTick(boolean flagRemoveThisTick) {
 		this.flagRemoveThisTick = flagRemoveThisTick;
 	}
 
-
-
-	public boolean isFlagItemWasActivated() {
-		return flagItemWasActivated;
-	}
-
-
-
-	public void setFlagItemWasActivated(boolean flagItemWasActivated) {
-		this.flagItemWasActivated = flagItemWasActivated;
-	}
-
-
-
 	@Override
 	public void dragDropEnd(DragSourceDropEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 	@Override
 	public void dragEnter(DragSourceDragEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 	@Override
 	public void dragExit(DragSourceEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 	@Override
 	public void dragOver(DragSourceDragEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 	@Override
 	public void dropActionChanged(DragSourceDragEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 	@Override
 	public void dragGestureRecognized(DragGestureEvent arg0) {
-		
 
-	//	status=CREATURE_OUT_OF_BATTLE;
-			Transferable transferable = new StringSelection("100"+"	"+getIdItem());
-			dragSource.startDrag(arg0, DragSource.DefaultCopyDrop,
-					transferable, this);
-		
+		Transferable transferable = new StringSelection("100" + "	"
+				+ getIdItem());
+		dragSource.startDrag(arg0, DragSource.DefaultCopyDrop, transferable,
+				this);
+
+	}
+
 	
-		
+
+	public int getItemType() {
+		return itemType;
 	}
 
-
-
-	public int getOwnerHeroId() {
-		return ownerHeroId;
+	public void setItemType(int itemType) {
+		this.itemType = itemType;
 	}
 
-
-
-	public void setOwnerHeroId(int ownerHeroId) {
-		this.ownerHeroId = ownerHeroId;
+	public void addAbilityToItem(HeroAbility heroAbility){
+		FAiF.gameScreen.heroAbilityStock.addAbility(heroAbility);
+		abilityScope.add(heroAbility.getHeroAbilityId());
+		heroAbility.setItemId(idItem);
 	}
-
-
-
-	public int getOwnerHeroSlotNumber() {
-		return ownerHeroSlotNumber;
-	}
-
-
-
-	public void setOwnerHeroSlotNumber(int ownerHeroSlotNumber) {
-		this.ownerHeroSlotNumber = ownerHeroSlotNumber;
-	}
-
+	
 }

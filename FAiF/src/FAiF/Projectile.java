@@ -4,6 +4,7 @@ public class Projectile {
 private double dmg;
 private int fromId;
 private int projectileType;
+private int damageType;
 public Projectile(int fromId, double dmg, int projectileType) {
 	this.dmg=dmg;
 	this.fromId=fromId;

@@ -9,8 +9,12 @@ import javax.imageio.ImageIO;
 
 
 
+
+
 import FAiF.FAiF;
+import FAiF.HeroAbility;
 import FAiF.Item;
+import HeroAbilitisPackage.HeroAbility_AutoAtack;
 
 
 public class Item_Weapon1 extends Item{
@@ -18,7 +22,8 @@ public Item_Weapon1(int grade) {
 
 	super();
 	
-	this.grade=grade;
+	//this.grade=grade;
+	this.grade=5;
 try {
 	image = ImageIO.read(new File("data/image/item/item13.gif"));
 } catch (IOException e) {
@@ -37,6 +42,11 @@ tmptext+="Пылающий меч. <br>Пассивно:<br> +"+tmpValue+" мощь при сражении в Беск
 setToolTipText(tmptext);
 
 setName("Пылающий меч");
+
+
+HeroAbility tmpability;
+tmpability=new HeroAbility_AutoAtack(10, 5, 0.3);
+addAbilityToItem(tmpability);
 
 
 

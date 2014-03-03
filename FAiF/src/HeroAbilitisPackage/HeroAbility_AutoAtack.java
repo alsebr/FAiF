@@ -1,5 +1,7 @@
 package HeroAbilitisPackage;
 
+import java.util.Random;
+
 import FAiF.FAiF;
 import FAiF.HeroAbility;
 import FAiF.Projectile;
@@ -8,15 +10,21 @@ import FAiF.HeroStock;
 
 public class HeroAbility_AutoAtack extends HeroAbility {
 
-	
+	private double damage;
+	private double damageDelta;
+	private double atackPerSecond;
 
-	public HeroAbility_AutoAtack(int heroId) {
+	public HeroAbility_AutoAtack(double damage,double damageDelta,double atackPerSecond ) {
 		super();
-		init(heroId, "Автоатака");
+		init(-1, "Автоатака");
 		
-		flagIsChargedAbility=true;
-		chargeMax=2;
 		
+		this.damage=damage;
+		this.damageDelta=damageDelta;
+		this.atackPerSecond=atackPerSecond;
+	
+		
+		setFlagIsActiveAbility(true);
 	}
 
 	@Override
@@ -25,9 +33,13 @@ public class HeroAbility_AutoAtack extends HeroAbility {
 	}
 	
 	@Override
-	public void useAbilityCA() {
-		setAbilityValue1(4-FAiF.gameScreen.heroStock.getHeroById(heroId).getHeroStat().agip/10);
-		setAbilityValue2(-1*FAiF.gameScreen.heroStock.getHeroById(heroId).getHeroStat().strp);
+	public void useAbilityCA(int heroId) {
+		setAbilityValue1(1/atackPerSecond);
+		
+		Random randomGenerator = new Random();
+		int tmpdd = randomGenerator.nextInt((int)damageDelta)+1;
+		
+		setAbilityValue2(-1*(damage+tmpdd));
 		chargeMax=getAbilityValue1();
 		if (flagUseMaxChargeNow){
 			FAiF.gameScreen.projectileStock.addProjectile(new Projectile(heroId,getAbilityValue2(),FAiF.gameScreen.PROJECTILE_FIRST));
@@ -36,7 +48,12 @@ public class HeroAbility_AutoAtack extends HeroAbility {
 	}
 
 	public String getAbilityTip() {
-		return "";
+		String htmltext;
+		htmltext=getName();
+		double maxd=damage+damageDelta;
+		htmltext+=": Физический урон "+damage+"-"+maxd+"; атак в секунду "+atackPerSecond;
+		
+		return htmltext;
 	}
 
 }
